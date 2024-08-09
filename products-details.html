@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details</title>
+    <!-- Consolidated CSS Links -->
+    
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="product-detail-style.css">
+    
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top">
+        <a class="navbar-brand" href="index.html"><b>Everyday Solution</b></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="index.html">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="products.html">Products</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="contact.html">Contact</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Spacing for the Fixed Navbar -->
+    <br><br><br><br><br><br>
+   
+    
+     <!-- Product Details Section -->
+     <div class="container mt-5 pt-5">
+        <div id="product-details" class="row">
+            <div class="col-md-6">
+                <h1 id="product-name"></h1>
+                <p id="product-price" class="highlight-price"></p>
+                <p id="product-description"></p>
+                <ul id="product-specifications"></ul>
+            </div>
+            <div class="col-md-6">
+                <img id="product-image" class="img-fluid" alt="Product Image">
+            </div>
+        </div>
+    </div>
+
+   <!-- JavaScript to Load Product Details -->
+   <script>
+    // Function to get query parameters
+    function getQueryParams() {
+        const params = new URLSearchParams(window.location.search);
+        return params.get('product');
+    }
+
+
+        // Function to load product details
+        function loadProductDetails(productId) {
+            const productDetails = {
+        1: {
+            name: 'Electric Screwdriver',
+            price: '$24.99',
+            description: 'The Electric Screwdriver is an essential tool for DIY enthusiasts and professionals alike. It features a powerful motor and variable speed settings, allowing for precise control when driving screws into various materials. With its ergonomic design, it provides comfortable grip and reduced fatigue during extended use. The electric screwdriver comes with an array of bit attachments to handle different types of screws and fasteners.',
+            specifications: [
+                'Power: 12V',
+                'Speed: 2000 RPM',
+                'Battery Life: 2 hours',
+                'Weight: 2 lbs'
+            ],
+            image: 'https://imgs.search.brave.com/aOAqV3O8kqUePIUeOhJ7bCnPfhYc1jtIjISbIWmXFNM/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly9sYW1i/ZXJ0b25lcy5zdG9y/ZS9jZG4vc2hvcC9m/aWxlcy9pbWFnZV8x/M2MzODczNC0yZTY2/LTRiMzctYWRhMy1m/ZjBlNGQyZTE4YzAu/anBnP3Y9MTY4Njgw/NTMxNCZ3aWR0aD0x/MzUw'
+        },
+        2: {
+            name: 'Cordless Drill',
+            price: '$89.99',
+            description: 'The Cordless Drill is a versatile tool designed for drilling holes and driving screws without the hassle of cords. It offers a robust battery life and high torque, making it ideal for both heavy-duty and light tasks. The drill features a keyless chuck for quick bit changes and multiple speed settings to accommodate various materials. Its compact and lightweight design ensures ease of use and maneuverability.',
+            specifications: [
+                'Power: 18V',
+                'Speed: 0-1500 RPM',
+                'Battery Life: Up to 3 hours',
+                'Chuck Size: 1/2 inch',
+                'Weight: 3 lbs',
+                'Additional Features: LED light, ergonomic handle, variable speed settings'
+            ],
+            image: 'https://imgs.search.brave.com/kdEPvRHbNuTZD_HjibsnIkPOKvYPczEErP0FG6aFkXQ/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly9jZG4u/dGhld2lyZWN1dHRl/ci5jb20vd3AtY29u/dGVudC9tZWRpYS8y/MDIyLzEwL2RyaWxs/LTIwNDhweC02MjU1/LmpwZz9hdXRvPXdl/YnAmcXVhbGl0eT03/NSZ3aWR0aD0xMDI0'
+        },
+        3: {
+            name: 'Adjustable Wrench',
+            price: '$14.99',
+            description: 'The Adjustable Wrench is a must-have tool in any toolbox. Its adjustable jaws allow it to grip various sizes of nuts and bolts with ease. Made from high-quality alloy steel, this wrench is built to last and resist corrosion. The ergonomic handle provides a comfortable grip, reducing hand fatigue during use. Whether youre working on plumbing, automotive, or general repairs, this wrench is versatile enough to handle any job.',
+            specifications: [
+                'Jaw Capacity: 0-2 inches',
+                'Length: 10 inches',
+                'Material: High-carbon steel',
+                'Weight: 1.5 lbs',
+                'Additional Features: Smooth operation, anti-corrosion coating, easy-to-read scale'
+            ],
+            image: 'https://imgs.search.brave.com/skCRov6Ij68KiSOvxynLNgp9PldHKArOWxoTb4dTrfI/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5pc3RvY2twaG90/by5jb20vaWQvNTc5/NDE3MDA0L3Bob3Rv/L3NpbHZlci13cmVu/Y2guanBnP3M9NjEy/eDYxMiZ3PTAmaz0y/MCZjPUp4MlBkM2hp/TGFUNV9uOEgzdkNp/N0FSdGE0NmNHbXZN/VWNCTTRtcDl2NXc9'
+        },
+        4: {
+            name: 'Ratchet Set',
+            price: '$39.99',
+            description: 'The Ratchet Set is a comprehensive tool kit that includes a range of sockets to fit various bolts and nuts. The ratchet handle features a quick-release button for easy socket changes and a 72-tooth gear for smooth operation, even in tight spaces. Made from high-quality chrome vanadium steel, these tools are durable and resistant to wear and tear. The set comes in a sturdy case for easy organization and transport.',
+            specifications: [
+                'Socket Sizes: 1/4 inch, 3/8 inch, 1/2 inch',
+                'Number of Pieces: 20',
+                'Material: Chrome vanadium steel',
+                'Weight: 5 lbs',
+                'Additional Features: Quick-release mechanism, reversible ratchet, organized storage case'
+            ],
+            image: 'https://imgs.search.brave.com/xaGkumt0qP0OVfCsoIzibIL6kXvt8yZl99kHZQPd4Qw/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly9tLm1l/ZGlhLWFtYXpvbi5j/b20vaW1hZ2VzL0kv/OTFuM3lVT2dMM1Mu/anBn'
+        },
+        5: {
+            name: 'Circular Saw',
+            price: '$129.99',
+            description: 'The Circular Saw is a powerful tool designed for cutting through wood, plastic, and even metal with the appropriate blade. It features a high-torque motor and a durable blade guard for safety. The saws adjustable cutting depth and bevel settings allow for precise and versatile cuts. Its lightweight design and ergonomic handle ensure easy maneuverability, making it ideal for both professional and DIY projects.',
+            specifications: [
+                'Power: 15A',
+                'Blade Diameter: 7.25 inches',
+                'Cutting Depth: 2.5 inches',
+                'Weight: 10 lbs',
+                'Additional Features: Adjustable base, dust blower, ergonomic handle'
+            ],
+            image: 'https://imgs.search.brave.com/dsJ1hKdpSN4VLx7nOiuUIadjGw34Uk1QEwr2vW1FORY/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly9oaXBz/LmhlYXJzdGFwcHMu/Y29tL3ZhZGVyLXBy/b2QuczMuYW1hem9u/YXdzLmNvbS8xNzE4/NzI0Nzc3LTQxV0Vl/S0d1NmtMLl9TTDUw/MF8uanBnP2Nyb3A9/MXh3OjEuMDB4aDtj/ZW50ZXIsdG9wJnJl/c2l6ZT05ODA6Kg'
+        },
+        6: {
+            name: 'Jigsaw',
+            price: '$74.99',
+            description: ' The Jigsaw is a versatile cutting tool, perfect for making intricate cuts in wood, metal, and plastic. It features variable speed control and a beveling shoe for angled cuts. The tool-free blade change system allows for quick and easy blade swaps, reducing downtime. The jigsaws ergonomic design and low vibration make it comfortable to use, even during extended cutting sessions.',
+            specifications: [
+                'Power: 6.5A',
+                'Speed: 0-3000 SPM',
+                'Cutting Capacity: 2 inches',
+                'Weight: 4 lbs',
+                'Additional Features: Orbital action, dust blower, adjustable shoe'
+            ],
+            image: 'https://imgs.search.brave.com/QI3g-LF4p3CC2ZWCNdOSt3pK8WMiGqBUKvfAbJmBq9k/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly9jZG4t/dHAzLm1venUuY29t/LzI0NjQ1LTM3MTM4/L2Ntcy9maWxlcy9k/M2U0ZWFiYi1mNmEx/LTQ2ZDUtYWQ0OS05/MjRhZGVlZWVlNGQ_/bWF4PTM1MA.jpeg'
+        },
+        7: {
+            name: 'Oscillating Multi-Tool',
+            price: '$89.99',
+            description: 'The Oscillating Multi-Tool is a versatile and compact tool that can handle a wide range of tasks, including cutting, sanding, scraping, and grinding. Its variable speed control allows for precision work, and the quick-change accessory system makes swapping out attachments fast and easy. The ergonomic design ensures comfort, and its compact size allows it to reach into tight spaces that other tools cant.',
+            specifications: [
+                'Power: 3A',
+                'Speed: 8000-20000 OPM',
+                'Accessory Types: Blades, sanders, scrapers',
+                'Weight: 3.5 lbs',
+                'Additional Features: Tool-free accessory change, ergonomic grip'
+            ],
+            image: 'https://imgs.search.brave.com/Wm0agXTxY1Fv_WTqhWZvQ9ERPoXhMESTPcpFqIu5BC0/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly9tb3Rv/cmhlYWR0b29scy5j/b20vY2RuL3Nob3Av/cHJvZHVjdHMvMlcw/QTMzNzYxXzEwMjR4/MTAyNC5qcGc_dj0x/NjIzODY0MDQz'
+        },
+        8: {
+            name: 'Angle Grinder',
+            price: '$59.99',
+            description: 'The Angle Grinder is a powerful tool for cutting, grinding, and polishing materials like metal, tile, and concrete. It features a high-performance motor and a spindle lock for quick wheel changes. The adjustable guard and two-position handle enhance safety and control. This grinder is perfect for both professional contractors and DIY enthusiasts looking to take on tough jobs.',
+            specifications: [
+                'Power: 7.5A',
+                'Disc Diameter: 4.5 inches',
+                'Speed: 11000 RPM',
+                'Weight: 5 lbs',
+                'Additional Features: Adjustable guard, side handle, dust vent'
+            ],
+            image: 'https://imgs.search.brave.com/86bDAMQrmmXr8GV6eY9upnyWtoIkTfiR3Y__NvQo5d8/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly93d3cu/ZGVrb3Rvb2xzLmNv/bS9jZG4vc2hvcC9w/cm9kdWN0cy8yXzg2/YWYyZGFiLTBjNTkt/NDJlZS1hMzNhLTQz/ZDk0OTAxNTQ2Zi5q/cGc_dj0xNjE5MTYx/ODg0'
+        },
+        9: {
+            name: 'Screwdriver Set',
+            price: '$19.99',
+            description: 'The Screwdriver Set includes a variety of screwdriver types and sizes to handle different tasks. Made from high-grade steel, these screwdrivers are durable and provide excellent torque. The ergonomic handles are designed for comfort and grip, reducing hand fatigue. This set is a must-have for any toolbox, whether youre assembling furniture, repairing electronics, or working on automotive projects.',
+            specifications: [
+                'Number of Pieces: 10',
+                'Types: Flathead, Phillips',
+                'Handle Material: Rubberized grip',
+                'Magnetic Tips: Yes',
+                'Weight: 2 lbs'
+            ],
+            image: 'https://imgs.search.brave.com/DIFTYu28smdfpFKVuByyGSmWChP73Ni6uwmSSd9Yk9E/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly9tLm1l/ZGlhLWFtYXpvbi5j/b20vaW1hZ2VzL0kv/ODF0czAwODctRkwu/anBn'
+        },
+        10: {
+            name: 'Tool Belt',
+            price: '$34.99',
+            description: 'The Tool Belt is a practical solution for keeping your tools organized and within reach while you work. Made from durable materials, it features multiple pockets of various sizes to hold different tools and accessories. The belt is adjustable to fit comfortably around your waist, and its reinforced stitching ensures long-lasting use. Whether youre on a construction site or working on home repairs, this tool belt helps you stay efficient and organized.',
+            specifications: [
+                'Material: Heavy-duty canvas',
+                'Number of Pockets: 10',
+                'Adjustable Size: Fits waist up to 50 inches',
+                'Weight: 1.5 lbs',
+                'Additional Features: Reinforced pockets, quick-release buckle'
+            ],
+            image: 'https://imgs.search.brave.com/qQxWwGIj96gI9F92h12G3OYZ_D0S-4zXVufaE93y2cA/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly9tLm1l/ZGlhLWFtYXpvbi5j/b20vaW1hZ2VzL0kv/ODF0czBSQnlsQUwu/anBn'
+        },
+        11: {
+            name: 'Pneumatic Hammer',
+            price: '$149.99',
+            description: 'The Pneumatic Hammer is a powerful tool designed for heavy-duty tasks like chipping, cutting, and scraping. Powered by compressed air, it delivers rapid and strong blows, making it ideal for demolition work. The hammer is constructed from high-quality materials to withstand tough conditions and ensure durability. It features an ergonomic grip for comfortable handling during extended use.',
+            specifications: [
+                'Power: 1.5 HP',
+                'Impact Rate: 2000 BPM',
+                'Weight: 8 lbs',
+                'Air Pressure: 90 PSI',
+                'Additional Features: Anti-vibration handle, quick-change chisels'
+            ],
+            image: 'https://imgs.search.brave.com/kqLPAROLVoeFbjpt9qi1g9lOS4SjYBsB41aLhl47V0Q/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YWxpYnJhcnkua2lt/YmFsbG1pZHdlc3Qu/Y29tL21hdGNoL1By/b2R1Y3RfQXNzZXRf/RGVzY3JpcHRpb24v/UHJvZHVjdF9TaWxv/L1JhbmsvMDAxL1By/b2R1Y3RfTnVtYmVy/Lzg0MDM4Lz9pbz10/cmFuc2Zvcm06YmFj/a2dyb3VuZCxjb2xv/cjpGRkZGRkYwMCZp/bz10cmFuc2Zvcm06/ZmlsbCZpbz10cmFu/c2Zvcm06ZXh0ZW5k/LGhlaWdodDozMDAs/d2lkdGg6MzAwLGJh/Y2tncm91bmQ6RkZG/RkZGJmZvY3VzcG9p/bnQ9MC41LDAuNQ.jpeg'
+        },
+        12: {
+            name: 'Bench Grinder',
+            price: '$89.99',
+            description: 'The Bench Grinder is a versatile tool for sharpening, shaping, and polishing metal. It features a powerful motor and adjustable tool rests for precision work. The grinder includes two grinding wheels with different grit levels, allowing you to tackle a variety of tasks. Its sturdy base reduces vibrations, ensuring stability and safety while in use. Perfect for both professional workshops and home garages.',
+            specifications: [
+                'Power: 6A',
+                'Wheel Diameter: 8 inches',
+                'Speed: 3450 RPM',
+                'Weight: 12 lbs',
+                'Additional Features: Adjustable tool rests, eye shields'
+            ],
+            image: 'https://imgs.search.brave.com/4mrhzh8m7TmmlDtzmVINDZzJmfFdWuTlQwHXfdik8YY/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly90My5m/dGNkbi5uZXQvanBn/LzAxLzI4LzMyLzA2/LzM2MF9GXzEyODMy/MDY1OF94Q0Z1VnVz/cDNMVlNxUzRhOWd6/Y2ZTVU1MbDU5aFlh/Vi5qcGc'
+        },
+        13: {
+            name: 'Laser Level',
+            price: '$54.99',
+            description: 'The Laser Level is an essential tool for precision alignment in construction, carpentry, and DIY projects. It projects highly visible horizontal and vertical lines, ensuring accurate alignment and straightness. The level includes an adjustable tripod for stable setup and can be mounted on various surfaces. Its perfect for installing shelves, hanging pictures, and other tasks that require exact measurements.',
+            specifications: [
+                'Laser Type: Red laser',
+                'Range: Up to 50 feet',
+                'Accuracy: ±1/8 inch',
+                'Weight: 1 lb',
+                'Additional Features: Tripod mount, self-leveling'
+            ],
+            image: 'https://imgs.search.brave.com/GJzJIUWDTirVLNtCjD_sRfFhHJuAdLtWm5zvAdQV3R0/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly93d3cu/ZW5naW5lZXJzdXBw/bHkuY29tL0ltYWdl/cy9DYXRlZ29yaWVz/L0NvbnRlbnQvaG93/LXRvLXVzZS1hLWxh/c2VyLWxldmVsLXRv/LWhhbmctcGljdHVy/ZXMtMS5qcGc'
+        },
+        14: {
+            name: 'Pipe Wrench',
+            price: '$39.99',
+            description: 'The Pipe Wrench is a heavy-duty tool designed for gripping and turning pipes and fittings. Made from durable cast iron, it provides excellent torque and leverage for tough jobs. The wrench features an adjustable jaw, allowing it to accommodate different pipe sizes. Its teeth are hardened to grip securely and prevent slipping. Ideal for plumbers, HVAC technicians, and anyone working with plumbing systems.',
+            specifications: [
+                'Jaw Capacity: 2 inches',
+                'Length: 14 inches',
+                'Material: Forged steel',
+                'Weight: 2 lbs',
+                'Additional Features: Adjustable jaw, ergonomic handle'
+            ],
+            image: 'https://imgs.search.brave.com/afcgWKZ_InrRYOeTL4TAOY7J_OmV_utK-M59uPGyWlA/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5pc3RvY2twaG90/by5jb20vaWQvODYz/MjMyMTYyL3Bob3Rv/L3dyZW5jaC5qcGc_/cz02MTJ4NjEyJnc9/MCZrPTIwJmM9Z25M/TGcyVjhQN2diZjMy/enV1QVpVU1FXM3FO/emlabVBuRy1GRkow/ZDdHND0'
+        },
+        15: {
+            name: 'Impact Driver',
+            price: '$119.99',
+            description: 'The Impact Driver is a compact and powerful tool designed to drive screws and bolts with ease. It delivers high torque and fast rotational speed, making it ideal for tough fastening jobs. The driver features a brushless motor for extended durability and runtime. Its lightweight design and ergonomic handle make it comfortable to use, even in tight spaces. The quick-change chuck allows for easy bit swaps.',
+            specifications: [
+                'Power: 20V',
+                'Speed: 0-3000 RPM',
+                'Torque: 1500 in-lbs',
+                'Weight: 3.5 lbs',
+                'Additional Features: LED light, variable speed trigger'
+            ],
+            image: 'https://imgs.search.brave.com/-3SWqR6AedfPcV8TY0xkZrjIVWaVkvp9B2dyecXuXfU/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly93d3cu/cHJvdG9vbHJldmll/d3MuY29tL3dwLWNv/bnRlbnQvdXBsb2Fk/cy8yMDIxLzA4L0lt/cGFjdC1Ecml2ZXIt/dnMtRHJpbGwtV2hh/dHMtdGhlLURpZmZl/cmVuY2UuanBn'
+        },
+        16: {
+            name: 'Rotary Tool',
+            price: '$69.99',
+            description: ' The Rotary Tool is a versatile, multi-functional tool that can handle a wide range of tasks, including cutting, grinding, sanding, and polishing. It features a high-speed motor and variable speed control, allowing for precise work on various materials. The tool comes with an assortment of attachments and accessories, making it perfect for detailed projects like jewelry making, engraving, and model building.',
+            specifications: [
+                'Power: 1.6A',
+                'Speed: 5000-35000 RPM',
+                'Accessories: Includes 30+ pieces',
+                'Weight: 2 lbs',
+                'Additional Features: Variable speed, ergonomic design'
+            ],
+            image: 'https://imgs.search.brave.com/IseOqbNpDDWNpglBQf3A0D2nr5s5-4272qbTHrZYH6s/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly93d3cu/YXJ0bmV3cy5jb20v/d3AtY29udGVudC91/cGxvYWRzLzIwMjEv/MDcvQWRvYmVTdG9j/a18xMDM4NTg0NC5q/cGVnP3c9MTgwMA'
+        },
+        17: {
+            name: 'Sander',
+            price: '$84.99',
+            description: 'The Sander is a reliable tool for smoothing surfaces and removing paint, varnish, and rust. It features a powerful motor and a dust collection system to keep your work area clean. The sanders compact design allows for easy handling, while its variable speed control offers precision in different sanding applications. Its suitable for use on wood, metal, and plastic, making it a versatile addition to your toolkit.',
+            specifications: [
+                'Power: 5A',
+                'Speed: 8000-12000 OPM',
+                'Sanding Pad Size: 5 inches',
+                'Weight: 3 lbs',
+                'Additional Features: Dust collection system, ergonomic handle'
+            ],
+            image: 'https://imgs.search.brave.com/vgJ8htvCkjZEO1HeIBxijZIoms2u8MrHA_eJ80yGkKk/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly9tLm1l/ZGlhLWFtYXpvbi5j/b20vaW1hZ2VzL0kv/NjFnTE82dEQ0VUwu/anBn'
+        },
+        18: {
+            name: 'Clamp Set',
+            price: '$29.99',
+            description: 'The Clamp Set includes a variety of clamps designed to hold materials securely in place during cutting, gluing, and other tasks. Made from durable materials, these clamps provide strong gripping force without damaging your workpieces. The set includes different sizes to accommodate various projects, and the quick-release mechanism allows for easy adjustments. Ideal for woodworking, metalworking, and other precision tasks.',
+            specifications: [
+                'Number of Pieces: 6',
+                'Clamp Sizes: 4 inches, 6 inches, 12 inches',
+                'Material: Steel',
+                'Weight: 4 lbs',
+                'Additional Features: Quick-release mechanism, anti-slip grip'
+            ],
+            image: 'https://imgs.search.brave.com/XRgl5LLqKOGvgougwT6-ZJoZKAedYp3Jrd6K4Ltiw3c/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly9lbmFi/bGluZ2RldmljZXMu/Y29tL3dwLWNvbnRl/bnQvdXBsb2Fkcy8y/MDE3LzA5LzIwMjVf/MjAxNy5qcGc'
+        },
+        19: {
+            name: 'Toolbox',
+            price: '$44.99',
+            description: 'The Toolbox is a sturdy and spacious storage solution for your tools and accessories. It features a durable construction with reinforced corners to withstand heavy use. The toolbox includes multiple compartments and a removable tray for organizing your tools. Its secure latches keep the contents safe, and the built-in handle makes it easy to transport. Perfect for professionals and DIYers alike.',
+            specifications: [
+                'Dimensions: 18 x 12 x 10 inches',
+                'Material: Plastic',
+                'Number of Compartments: 10',
+                'Weight: 5 lbs',
+                'Additional Features: Lockable lid, handle for easy transport'
+            ],
+            image: 'https://imgs.search.brave.com/Q6CHcyrb_y_rKvuOzde5fj9buC3_fo2jxmt4T-mnr9g/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5nZXR0eWltYWdl/cy5jb20vaWQvNzMw/NzQ1MDgvcGhvdG8v/dG9vbC1ib3guanBn/P3M9NjEyeDYxMiZ3/PTAmaz0yMCZjPXhl/cm1BbWhveHhlczNG/bGZIVTNLVzZtelIz/S3hfTExwUk1CNUhr/UWZXZlk9'
+        },
+        20: {
+            name: 'Socket Set',
+            price: '$79.99',
+            description: 'The Socket Set is a comprehensive kit that includes a range of sockets and accessories for various fastening tasks. Made from high-strength chrome vanadium steel, these sockets are designed to last and resist corrosion. The set includes both metric and SAE sizes, as well as a ratchet handle with a quick-release button. The sockets are neatly organized in a durable case for easy storage and transport.',
+            specifications: [
+                'Socket Sizes: 1/4 inch, 3/8 inch, 1/2 inch',
+                'Number of Pieces: 30',
+                'Material: Chrome vanadium steel',
+                'Weight: 6 lbs',
+                'Additional Features: Quick-release ratchet, organized case'
+            ],
+            image: 'https://imgs.search.brave.com/6UsvRQp-w6lrAEKID4nSqsPNN4-N9ZbaMYKk4knG_-8/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly9pbWFn/ZXMudGVrdG9uLmNv/bS9pbWFnZXMvcHJv/ZHVjdC9TS1QyNTEw/MV8xLmpwZz93aWR0/aD0xNTM2JnF1YWxp/dHk9NzU'
+        },
+        21: {
+            name: 'Bench Vise',
+            price: '$89.99',
+            description: 'The Bench Vise is an essential tool for securely holding materials during cutting, drilling, and assembly. It features a durable cast iron body with a swivel base for flexibility in positioning. The vise has a large anvil work surface and a precision-machined jaw that provides a firm grip without damaging your workpieces. Ideal for use in workshops and garages.',
+            specifications: [
+                'Jaw Width: 6 inches',
+                'Jaw Opening: 7 inches',
+                'Material: Cast iron',
+                'Weight: 10 lbs',
+                'Additional Features: Swivel base, durable construction'
+            ],
+            image: 'https://imgs.search.brave.com/47dMk2W8NRsODQeALno1UUSaDlhEtaiY1aTKU0-gODQ/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly9maXJl/YmFsbHRvb2wuY29t/L2Nkbi9zaG9wL2Zp/bGVzL0ZCLUNUMjAy/LTVfTUFpbl9HUkVZ/LmpwZz92PTE2OTQ4/MDc1ODImd2lkdGg9/MzAwMA'
+        },
+        22: {
+            name: 'Welding Machine',
+            price: '$399.99',
+            description: 'The Welding Machine is a versatile tool for joining metals through welding. It features a dual voltage system, making it suitable for both home and professional use. The machine supports MIG, TIG, and Stick welding processes, providing flexibility for different projects. It includes a digital display for easy control of welding parameters and comes with essential accessories to get started right away.',
+            specifications: [
+                'Power: 200A',
+                'Welding Type: MIG/TIG',
+                'Voltage: 220V',
+                'Weight: 30 lbs',
+                'Additional Features: Adjustable heat settings, durable construction'
+            ],
+            image: 'https://imgs.search.brave.com/FcWHOZNuzA6l73-46qdWmQSVMydrZYqRA9TKtZgBYHs/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly9tLm1l/ZGlhLWFtYXpvbi5j/b20vaW1hZ2VzL0kv/NzFicHNmYVIyV0wu/anBn'
+        },
+        23: {
+            name: 'Digital Caliper',
+            price: '$39.99',
+            description: 'The Digital Caliper is a precision measuring tool designed for accurate measurements of internal, external, and depth dimensions. It features an easy-to-read LCD display and offers measurements in both inches and millimeters. The caliper is made from hardened stainless steel for durability and accuracy. Its perfect for use in engineering, woodworking, and metalworking.',
+            specifications: [
+                'Measurement Range: 0-6 inches',
+                'Accuracy: ±0.01mm',
+                'Display Type: Digital',
+                'Material: Stainless steel',
+                'Weight: 0.5 lbs'
+            ],
+            image: 'https://imgs.search.brave.com/T55aF590XkBnxnSTcpeKJ0TTtKDs_UC48UhZIFBiC80/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9tLm1l/ZGlhLWFtYXpvbi5j/b20vaW1hZ2VzL1Mv/YXBsdXMtbWVkaWEt/bGlicmFyeS1zZXJ2/aWNlLW1lZGlhLzgx/MGYzNDRlLWM4MjYt/NDZiZS05N2I5LWE1/YWEzMWEwZmIzMS5f/X0NSMCwwLDk3MCw2/MDBfUFQwX1NYOTcw/X1YxX19fLmpwZw'
+        },
+        24: {
+            name: 'Floor Jack',
+            price: '$129.99',
+            description: 'The Floor Jack is a heavy-duty lifting tool designed for raising vehicles for maintenance and repair work. It features a hydraulic system that allows for easy and efficient lifting of cars and trucks. The jack has a sturdy steel construction and a wide base for stability. It also includes a safety valve to prevent overloading, ensuring safe operation.',
+            specifications: [
+                'Lift Capacity: 2 tons',
+                'Lift Range: 5-15 inches',
+                'Material: Steel',
+                'Weight: 20 lbs',
+                'Additional Features: Safety release valve, durable wheels'
+            ],
+            image: 'https://imgs.search.brave.com/a3J6Tqr7HOusBkUZfMmy7xUOL6GHns7oEkOTObozGSc/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly9tLm1l/ZGlhLWFtYXpvbi5j/b20vaW1hZ2VzL0kv/NzFuSFVqdFdLbEwu/anBn'
+        },
+        25: {
+            name: 'Lathe Machine',
+            price: '$499.99',
+            description: 'The Lathe Machine is a precision tool designed for shaping and cutting materials such as wood, metal, and plastic. It features a powerful motor and variable speed control, allowing for accurate and consistent work. The lathe includes a range of accessories for different tasks and is built with a robust frame for stability. Ideal for use in workshops and industrial settings.',
+            specifications: [
+                'Power: 1 HP',
+                'Swing Over Bed: 12 inches',
+                'Distance Between Centers: 36 inches',
+                'Weight: 150 lbs',
+                'Additional Features: Variable speed, precision controls'
+            ],
+            image: 'https://imgs.search.brave.com/kkCm7-hxXDUIyEXj8vbPrJLAIEylN2YnlAPnmQGF71Y/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly9lbmdp/bmVlcmluZ2xlYXJu/LmNvbS93cC1jb250/ZW50L3VwbG9hZHMv/MjAyMS8xMi9Fbmdp/bmUtTGF0aGUtTWFj/aGluZS5qcGc'
+        },
+        26: {
+            name: 'Metal Detector',
+            price: '$99.99',
+            description: ' The Metal Detector is a high-performance tool for locating metal objects underground. It features adjustable sensitivity and discrimination settings, allowing you to find specific types of metal. The detector includes a waterproof search coil for use in various terrains and a digital display for easy reading of results. Its perfect for treasure hunting, archaeological digs, and finding lost items.',
+            specifications: [
+                'Detection Depth: Up to 8 inches',
+                'Sensitivity: Adjustable',
+                'Material: Plastic and metal',
+                'Weight: 2 lbs',
+                'Additional Features: Adjustable arm strap, audio alert'
+            ],
+            image: 'https://imgs.search.brave.com/jDp6gX-Q6V5amzEZc9dR9e8L6xh19sELCVwrdDdDTTY/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly9oaXBz/LmhlYXJzdGFwcHMu/Y29tL3ZhZGVyLXBy/b2QuczMuYW1hem9u/YXdzLmNvbS8xNjg5/NzMxNzY5LTgxQkQz/VEE5RS1MLmpwZz9j/cm9wPTEuMDB4dzox/LjAweGg7MCwwJnJl/c2l6ZT05ODA6Kg'
+        },
+        27: {
+            name: 'Ratcheting Screwdriver',
+            price: '$34.99',
+            description: 'The Ratcheting Screwdriver is a versatile tool designed for easy and efficient screwdriving. It features a ratcheting mechanism that allows for continuous turning without removing the screwdriver from the screw, making it ideal for repetitive tasks. The screwdriver comes with a set of interchangeable bits for various types of screws. Its ergonomic handle provides a comfortable grip, reducing hand fatigue.',
+            specifications: [
+                'Number of Bits: 10',
+                'Handle Type: Ergonomic',
+                'Mechanism: Ratcheting',
+                'Weight: 1 lb',
+                'Additional Features: Quick-change bits, magnetic tip'
+            ],
+            image: 'https://imgs.search.brave.com/fgdOolT1H5SrvD20tI2MVkqv6tMfIuzX1M9juUChbV8/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly93d3cu/bHR0c3RvcmUuY29t/L2Nkbi9zaG9wL3By/b2R1Y3RzL0FkZGl0/aW9uYWxMVFRTY3Jl/d0RyaXZlclBob3Rv/cy0yMDAwcHgtMy5q/cGc_dj0xNzA2MTMy/MzM5JndpZHRoPTE0/NDU'
+        },
+        28: {
+            name: 'Tool Set',
+            price: '$159.99',
+            description: 'The Tool Set is a comprehensive kit that includes a wide range of tools for various tasks, from household repairs to professional projects. The set is organized in a durable case and includes everything from screwdrivers and pliers to wrenches and a hammer. Each tool is made from high-quality materials to ensure durability and long-lasting performance.',
+            specifications: [
+                'Number of Pieces: 50',
+                'Includes: Wrenches, screwdrivers, pliers',
+                'Material: Chrome vanadium steel',
+                'Weight: 10 lbs',
+                'Additional Features: Organized case, durable tools'
+            ],
+            image: 'https://imgs.search.brave.com/hJpa24tYBAKCRQ_LYyAROH5vfswJmNqU8EfIzKm2Xuk/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly9oaXBz/LmhlYXJzdGFwcHMu/Y29tL3ZhZGVyLXBy/b2QuczMuYW1hem9u/YXdzLmNvbS8xNzA0/MjI0NDUwLTgxa2J1/NGFBNEZMLmpwZz9j/cm9wPTEuMDB4dzow/Ljg5M3hoOzAsMC4w/NDg2eGgmcmVzaXpl/PTk4MDoq'
+        },
+        29: {
+            name: 'Precision Screwdriver Set',
+            price: '$24.99',
+            description: 'The Precision Screwdriver Set is perfect for small and delicate tasks, such as repairing electronics, watches, and eyeglasses. The set includes a variety of screwdrivers with precision tips, allowing for accurate work on tiny screws. Each screwdriver is made from high-quality steel and features a comfortable handle for precise control. The set comes in a compact case for easy storage and transport.',
+            specifications: [
+                'Number of Pieces: 8',
+                'Types: Flathead, Phillips',
+                'Handle Material: Rubberized',
+                'Weight: 1 lb',
+                'Additional Features: Precision tips, anti-slip handle'
+            ],
+            image: 'https://imgs.search.brave.com/-ppYy_DUD6Y2gRH24FDC1WGpkBMcbKYIEe0tP3cLtqs/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly9ob3Rv/dG9vbHMuY29tL2Nk/bi9zaG9wL2ZpbGVz/L0dyb3VwMTA2Lmpw/Zz92PTE3MTgzNDc5/ODAmd2lkdGg9MTAw/MA'
+        },
+        30: {
+            name: 'Reciprocating Saw',
+            price: '$139.99',
+            description: 'The Reciprocating Saw is a powerful cutting tool designed for a variety of materials, including wood, metal, and plastic. It features a high-speed motor and a variable speed trigger for precise control. The saws adjustable shoe allows for better stability and depth control during cutting. It also includes a quick-change blade system for easy and fast blade swaps, making it an essential tool for demolition work and remodeling.',
+            specifications: [
+                'Power: 10A',
+                'Speed: 0-2800 SPM',
+                'Cutting Capacity: 6 inches',
+                'Weight: 7 lbs',
+                'Additional Features: Tool-free blade change, variable speed'
+            ],
+            image: 'https://imgs.search.brave.com/V4afzgrQWmDzxP4cRqOqo-pDgLg8Z9bVi3BrvEA-EQQ/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly9tLm1l/ZGlhLWFtYXpvbi5j/b20vaW1hZ2VzL0kv/NDFTT2dVMlJqLUwu/anBn'
+        },
+        31: {
+            name: 'Hammer',
+            price: '$24.99',
+            description: 'The Hammer is a fundamental tool for any toolkit, perfect for driving nails, removing them, and general construction work. It features a strong, durable steel head and a comfortable, shock-absorbing handle to reduce user fatigue. The claw design is ideal for nail removal, and the well-balanced weight makes it easy to use for extended periods without strain.',
+            specifications: [
+                'Head Material: Steel',
+                'Handle Material: Fiberglass',
+                'Weight: 16 oz',
+                'Length: 13 inches',
+                'Additional Features: Anti-vibration handle, balanced design'
+            ],
+            image: 'https://imgs.search.brave.com/g_2IJFi3fwjBurrAagkZK70kGGQ4N64G-m4tH2GwB7I/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5nZXR0eWltYWdl/cy5jb20vaWQvNTYw/MDQwMzI5L3Bob3Rv/L2EtYmVhdXRpZnVs/LWhhbW1lci5qcGc_/cz02MTJ4NjEyJnc9/MCZrPTIwJmM9V3o0/ZjF2Ul9PTnl0WkhP/V1lNdy1WRHpCT3Et/WEVZUnc4ZDZUWkF1/OUJ1VT0'
+        },
+        32: {
+            name: 'Tape Measure',
+            price: '$14.99',
+            description: 'The Tape Measure is a reliable and easy-to-use tool for measuring distances and dimensions. It features a durable, flexible tape with clear, easy-to-read markings in both inches and centimeters. The tape measure has a smooth retraction mechanism and a sturdy case that protects it from damage, making it an essential tool for carpentry, construction, and DIY projects.',
+            specifications: [
+                'Tape Length: 25 feet',
+                'Tape Material: Steel',
+                'Case Material: Plastic',
+                'Weight: 0.5 lbs',
+                'Additional Features: Locking mechanism, easy-grip case'
+            ],
+            image: 'https://imgs.search.brave.com/VH3l7B_s0VGrZpDGFXH2_NLKFrWuOoTUclHGCJfkeVE/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5pc3RvY2twaG90/by5jb20vaWQvMTE0/ODg2ODQyMC9waG90/by9tZWFzdXJpbmct/dGFwZS1vbi13b29k/ZW4tdGFibGUuanBn/P3M9NjEyeDYxMiZ3/PTAmaz0yMCZjPVRH/TlNjTWQ0VTBELXB3/clpJV3U5RFZWeFZs/Y2dMYjRpZFpLUVRX/Z3BlMjA9'
+        },
+        33: {
+            name: 'Pliers Set',
+            price: '$49.99',
+            description: 'The Pliers Set includes a variety of pliers designed for gripping, cutting, and twisting wires and other materials. The set features durable, high-carbon steel construction with comfortable, non-slip handles for enhanced control. The precision-engineered jaws ensure a secure grip, making them ideal for a range of applications, from electrical work to general repairs.',
+            specifications: [
+                'Number of Pieces: 5',
+                'Types: Needle nose, slip joint, lineman',
+                'Material: Chrome vanadium steel',
+                'Weight: 2 lbs',
+                'Additional Features: Ergonomic grips, precision tips'
+            ],
+            image: 'https://imgs.search.brave.com/RShjI9oOV3TobGdumLJ9YjcWL8F2rsf0M4x3Kcrvuqg/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly9zb25p/Y3Rvb2xzdXNhLmNv/bS93cC1jb250ZW50/L3VwbG9hZHMvMjAx/OS8wNi82MDEyMDdf/djJfXzQ1MTAwLjE1/ODg2OTAzNTcuMTI4/MC4xMjgwLTEtNDAw/eDI1My5qcGc'
+        },
+        34: {
+            name: 'Utility Knife',
+            price: '$19.99',
+            description: ' The Utility Knife is a versatile cutting tool suitable for a wide range of tasks, from opening boxes to cutting materials like carpet, drywall, and rope. It features a retractable blade with adjustable positions for different cutting depths, and the ergonomic handle provides a comfortable grip. The knife also includes a quick-change mechanism for easy blade replacement.',
+            specifications: [
+                'Blade Type: Retractable',
+                'Blade Material: Stainless steel',
+                'Handle Material: Plastic',
+                'Weight: 0.5 lbs',
+                'Additional Features: Blade storage compartment, easy blade replacement'
+            ],
+            image: 'https://imgs.search.brave.com/yrcwD9a7VFAf43HCwHr8p1YgCfdJFjiBzBlRNLi7DEs/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly93d3cu/c3RhbmxleXRvb2xz/LmNvbS9OQUcvUFJP/RFVDVC9JTUFHRVMv/SElSRVMvU1RIVDEw/Mjc0L1NUSFQxMDI3/NF8xLmpwZz9yZXNp/emU9NTMweDUzMA'
+        },
+        35: {
+            name: 'Speed Square',
+            price: '$12.99',
+            description: 'The Speed Square is a multi-functional tool used for marking angles, making straight cuts, and measuring dimensions in construction projects. It features a solid, die-cast aluminum body with easy-to-read markings for accurate measurements. The speed square is a must-have for carpenters, roofers, and DIY enthusiasts, offering versatility and precision in one compact tool.',
+            specifications: [
+                'Material: Aluminum',
+                'Size: 7 inches',
+                'Measurements: Degrees, inches, and fractions',
+                'Weight: 0.5 lbs',
+                'Additional Features: Precision markings, durable construction'
+            ],
+            image: 'https://imgs.search.brave.com/d4if9-uMcQbmF51EUzchd4kmkJVrfVsAbMU29r3ahf0/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly9oaXBz/LmhlYXJzdGFwcHMu/Y29tL2htZy1wcm9k/L2ltYWdlcy9sZWFk/LTE2NjI3NDI5ODMu/anBnP2Nyb3A9MC43/MjN4dzoxLjAweGg7/MC4xMzF4dywwJnJl/c2l6ZT02NDA6Kg'
+        },
+        36: {
+            name: 'Thermal Imaging Camera',
+            price: '$399.99',
+            description: 'The Thermal Imaging Camera is a high-tech tool used for detecting temperature variations and identifying heat sources. It is ideal for applications like electrical inspections, HVAC maintenance, and building diagnostics. The camera features a high-resolution thermal sensor and a user-friendly interface with real-time temperature display. It also includes a rechargeable battery for extended use.',
+            specifications: [
+                'Temperature Range: -4°F to 1022°F',
+                'Resolution: 320 x 240',
+                'Display Type: LCD',
+                'Weight: 1 lb',
+                'Additional Features: Adjustable focus, multiple color palettes'
+            ],
+            image: 'https://imgs.search.brave.com/t4Nbm93j9rzPx9yg1Dda7HyDTIEk3WXYaEp01kNUcwQ/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly9jYW1l/cmFyZXZpZXdzLmNv/bS93cC1jb250ZW50/L3VwbG9hZHMvMjAy/NC8wMi9mbGlyLWMz/eC10aGVybWFsLWNh/bWVyYS5wbmc'
+        },
+        37: {
+            name: 'Saw',
+            price: '$54.99',
+            description: 'The Saw is a versatile cutting tool designed for woodworking, metalworking, and general construction. It features a sharp, durable blade that provides clean, precise cuts through a variety of materials. The saws ergonomic handle ensures a comfortable grip, making it easy to use for extended periods. Ideal for carpentry, home improvement projects, and DIY enthusiasts.',
+            specifications: [
+                'Blade Length: 20 inches',
+                'Material: High-carbon steel',
+                'Weight: 2 lbs',
+                'Handle Material: Rubber',
+                'Additional Features: Sharp teeth, durable construction'
+            ],
+            image: 'https://imgs.search.brave.com/dMIotcpU8pzRyTzSbTArGfSB7P3Ub7zyo2Xjav4VkSw/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly90My5m/dGNkbi5uZXQvanBn/LzAwLzM2LzY3LzEw/LzM2MF9GXzM2Njcx/MDQ0X25hbWNaVmNz/eklxWll5blUzS09N/S1B4blVZcmMzY2tn/LmpwZw'
+        },
+        38: {
+            name: 'Tile Cutter',
+            price: '$59.99',
+            description: 'The Tile Cutter is a specialized tool for cutting ceramic and porcelain tiles with precision and ease. It features a tungsten carbide cutting wheel that delivers clean, straight cuts, and a sturdy base that provides stability during operation. The tile cutter is equipped with an adjustable guide for making angled cuts, making it ideal for tiling projects in bathrooms, kitchens, and more.',
+            specifications: [
+                'Cutting Length: Up to 24 inches',
+                'Material: Steel',
+                'Weight: 10 lbs',
+                'Additional Features: Adjustable guide, durable construction'
+            ],
+            image: 'https://imgs.search.brave.com/I0KvZ_vNtCb8M-4_z55Dm8454tuRQt27owIBWy23cIg/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly93d3cu/cnViaS5jb20vZW4v/YmxvZy93cC1jb250/ZW50L3VwbG9hZHMv/MjAxOS8wOC9jb3J0/YWRvci1tYW51YWwt/VFotUlVCSS5qcGc'
+        },
+        39: {
+            name: 'Vernier Caliper',
+            price: '$29.99',
+            description: 'The Vernier Caliper is a precision measuring tool used for obtaining accurate measurements of internal, external, and depth dimensions. It features a dual-scale design with both metric and imperial measurements, and a fine adjustment thumbwheel for precise readings. The caliper is made from stainless steel for durability and is ideal for use in engineering, metalworking, and scientific research.',
+            specifications: [
+                'Measurement Range: 0-6 inches',
+                'Accuracy: ±0.02mm',
+                'Material: Stainless steel',
+                'Weight: 1 lb',
+                'Additional Features: Fine adjustment screw, dual scales'
+            ],
+            image: 'https://imgs.search.brave.com/wB_YiD8mqlkKDgwOovUQFkNLNxgcu-NP-wHaB3f95dI/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly90NC5m/dGNkbi5uZXQvanBn/LzAwLzgyLzc2LzQx/LzM2MF9GXzgyNzY0/MTM1X2xrMkZ4am1t/UFMwTWJvOVphSnp1/YUdVMHRSbXVxSzdS/LmpwZw'
+        },
+        40: {
+            name: 'Torque Wrench',
+            price: '$89.99',
+            description: ' The Torque Wrench is an essential tool for applying precise torque to fasteners, ensuring proper tension and load distribution. It features a click-style mechanism that alerts you when the preset torque value is reached. The wrench is made from high-strength steel and has an ergonomic handle for comfortable use. It is ideal for automotive, mechanical, and construction applications.',
+            specifications: [
+                'Torque Range: 10-150 ft-lbs',
+                'Material: Chrome vanadium steel',
+                'Weight: 3 lbs',
+                'Additional Features: Click mechanism, calibrated for precision'
+            ],
+            image: 'https://imgs.search.brave.com/XwEjpxe9BsJ1PWj79pKRS0qZSDT_bRVgL4HH1A0Vns4/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5pc3RvY2twaG90/by5jb20vaWQvMTE2/ODI1OTI3OC9waG90/by90b3JxdWUtd3Jl/bmNoLmpwZz9zPTYx/Mng2MTImdz0wJms9/MjAmYz1QNEd3ZjFt/VjlmT190MmdKT2lQ/QTliZElZa3RHZTFz/ZG9jTVRDSDNwT2RJ/PQ'
+        },
+        41: {
+            name: 'Tool Chest',
+            price: '$219.99',
+            description: 'The Tool Chest is a spacious and durable storage solution designed to keep your tools organized and easily accessible. It features multiple drawers of varying sizes, perfect for storing hand tools, power tools, and accessories. The tool chest is made from heavy-duty steel with a powder-coated finish for durability and resistance to rust. It also includes locking mechanisms for added security, making it ideal for professional workshops and home garages.',
+            specifications: [
+                'Dimensions: 36 x 18 x 40 inches',
+                'Material: Steel',
+                'Number of Drawers: 10',
+                'Weight: 60 lbs',
+                'Additional Features: Lockable drawers, durable construction'
+            ],
+            image: 'https://imgs.search.brave.com/MKTS-kbH66lkGpR83eepLgvoKTvKP1Q08HHMJRkiEws/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly9kYW0u/dGhkc3RhdGljLmNv/bS9jb250ZW50L3By/b2R1Y3Rpb24vVGto/LWVaMnNfZFFFeFZS/WGIyLXZTdy90NzZa/Y3FzZS1rNUNTMFpT/SDhkNVBnL09yaWdp/bmFsJTIwZmlsZS8y/MDI0X1ZOMVAyX1Rv/b2xfQ2hlc3RfQ29t/Ym9zLmpwZz9pbT1S/ZXNpemU9KDcwMyw3/MDMp'
+        },
+        42: {
+            name: 'Router',
+            price: '$139.99',
+            description: ' The Router is a versatile power tool used for hollowing out areas in wood, plastic, and other materials. It features a powerful motor and adjustable speed settings, allowing for precise control during detailed woodworking tasks. The router comes with a variety of bits and attachments for different types of cuts, making it ideal for cabinetry, furniture making, and other woodworking projects.',
+            specifications: [
+                'Power: 2 HP',
+                'Speed: 10000-25000 RPM',
+                'Collet Size: 1/4 inch',
+                'Weight: 5 lbs',
+                'Additional Features: Variable speed control, ergonomic handle'
+            ],
+            image: 'https://imgs.search.brave.com/1_ax9daWQ7dFuIPK0VcLED8ySqta1wMQDTM46xMgGic/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly93d3cu/ZmFtaWx5aGFuZHlt/YW4uY29tL3dwLWNv/bnRlbnQvdXBsb2Fk/cy8yMDIyLzAyL21p/bHdhdWtlZS0xOHYt/Y29yZGxlc3Mtcm91/dGVyLXRvb2wtZWNv/bW0tdmlhLWFtYXpv/bi5jb21fLmpwZz9m/aXQ9NzAwLDcwMA'
+        },
+        43: {
+            name: 'Miter Saw',
+            price: '$229.99',
+            description: 'The Miter Saw is a powerful tool designed for making precise crosscuts and miter cuts in wood and other materials. It features a sharp, durable blade and an adjustable cutting angle, allowing for accurate cuts at various angles. The saw also includes a laser guide for improved cutting precision and a dust collection system to keep your workspace clean. Ideal for woodworking, framing, and trim work.',
+            specifications: [
+                'Power: 15A',
+                'Blade Diameter: 10 inches',
+                'Cutting Capacity: 12 inches',
+                'Weight: 20 lbs',
+                'Additional Features: Adjustable bevel, laser guide'
+            ],
+            image: 'https://imgs.search.brave.com/WBntLM0xWE4uZNBUUcPnOOza_bmWppaGKQQ8to_HS-c/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5pc3RvY2twaG90/by5jb20vaWQvMTE4/MTk5MTUzL3Bob3Rv/L2NpcmN1bGFyLXNh/dy5qcGc_cz02MTJ4/NjEyJnc9MCZrPTIw/JmM9TDFOZjlHcG9q/VEdMM05hY2tueUJt/bF9WYTdzMDRvRU9X/OXNSOGVnS0NETT0'
+        },
+        44: {
+            name: 'Belt Sander',
+            price: '$129.99',
+            description: ' The Belt Sander is a heavy-duty tool used for sanding down wood and other materials to a smooth finish. It features a powerful motor and adjustable speed settings, allowing for fast and efficient material removal. The sander comes with a dust collection bag to keep your work area clean and a comfortable handle for easy maneuvering. It’s perfect for carpentry, furniture making, and general woodworking.',
+            specifications: [
+                'Power: 8A',
+                'Belt Size: 3 x 21 inches',
+                'Speed: 1000-1500 SPM',
+                'Weight: 8 lbs',
+                'Additional Features: Dust collection system, adjustable handle'
+            ],
+            image: 'https://imgs.search.brave.com/xaPpDoG2VKOpi1auYU0rw0Qb41qOSrt37C-ffC1YyRA/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly9pbWFn/ZXMuZmluZXdvb2R3/b3JraW5nLmNvbS9h/cHAvdXBsb2Fkcy8y/MDIwLzA3LzA3MTEz/NTUzL1cyODQtYmVs/dC1zYW5kZXJzLTMt/ZTE2NzgyMDcyMzky/MzguanBn'
+        },
+        45: {
+            name: 'Air Compressor',
+            price: '$179.99',
+            description: 'The Air Compressor is a powerful tool used for powering pneumatic tools, inflating tires, and other tasks that require compressed air. It features a large tank for storing air, a powerful motor for quick refills, and a pressure gauge for monitoring output. The air compressor is equipped with wheels and a handle for easy mobility, making it ideal for both professional workshops and home use.',
+            specifications: [
+                'Tank Capacity: 20 gallons',
+                'Power: 2 HP',
+                'Max Pressure: 150 PSI',
+                'Weight: 60 lbs',
+                'Additional Features: Dual gauges, quick-connect couplers'
+            ],
+            image: 'https://imgs.search.brave.com/ik_GhEMBEQOKlygc8E8homHpYGhEHO6uTm5JljQN_-g/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly90My5m/dGNkbi5uZXQvanBn/LzA3LzUxLzY1LzI4/LzM2MF9GXzc1MTY1/Mjg5M19GRE5tOURV/RGJjR0d2d3BCZVBz/UFdjd3ZLd0xKZmFL/US5qcGc'
+        },
+        46: {
+            name: 'Electric Drill',
+            price: '$89.99',
+            description: 'The Electric Drill is a versatile power tool used for drilling holes and driving screws in various materials. It features a powerful motor and variable speed settings, allowing for precise control in different tasks. The drill comes with a keyless chuck for quick bit changes and an ergonomic handle for comfortable use. It’s an essential tool for construction, woodworking, and DIY projects.',
+            specifications: [
+                'Power: 5A',
+                'Speed: 0-1500 RPM',
+                'Chuck Size: 3/8 inch',
+                'Weight: 3 lbs',
+                'Additional Features: Variable speed, ergonomic handle'
+            ],
+            image: 'https://imgs.search.brave.com/0OS5VQc0LEUntDZScQX7A_9BJzDnmSNicG8mZCIXFUk/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly9tLm1l/ZGlhLWFtYXpvbi5j/b20vaW1hZ2VzL0kv/NTFROENzSVdzUUwu/anBn'
+        },
+        47: {
+            name: 'Portable Generator',
+            price: '$299.99',
+            description: 'The Portable Generator is a reliable source of power for outdoor activities, emergency situations, and job sites. It features a powerful engine and multiple outlets for powering various devices and tools. The generator is equipped with a fuel-efficient design for extended runtime and includes safety features like overload protection and low oil shutdown. Ideal for camping, tailgating, and backup power.',
+            specifications: [
+                'Power Output: 3500W',
+                'Fuel Type: Gasoline',
+                'Runtime: 8 hours',
+                'Weight: 70 lbs',
+                'Additional Features: Electric start, low oil shutdown'
+            ],
+            image: 'https://imgs.search.brave.com/jEmquep89fnQEbA2tJ03NfC_lP3KTeSWJHVqxAYza3Q/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly93d3cu/cHJvdG9vbHJldmll/d3MuY29tL3dwLWNv/bnRlbnQvdXBsb2Fk/cy8yMDIwLzA4L0Jl/c3QtR2VuZXJhdG9y/LTAzLTgwMHg1MzQu/anBn'
+        },
+        48: {
+            name: 'Table Saw',
+            price: '$399.99',
+            description: 'The Table Saw is a powerful tool used for making precise cuts in wood and other materials. It features a large, stable table surface and a sharp, durable blade that can be adjusted for different cutting angles. The saw also includes a dust collection system and safety features like a blade guard and anti-kickback pawls. Ideal for woodworking, cabinetry, and construction.',
+            specifications: [
+                'Power: 15A',
+                'Blade Diameter: 10 inches',
+                'Cutting Depth: 3.5 inches',
+                'Weight: 70 lbs',
+                'Additional Features: Adjustable fence, safety guard'
+            ],
+            image: 'https://imgs.search.brave.com/Iq_YTbyKbqXu1-ZuU95s7TtWQ_sQcD1qtfCELfCBL3w/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5pc3RvY2twaG90/by5jb20vaWQvOTIy/ODk0OTEvcGhvdG8v/c2F3LXRhYmxlLmpw/Zz9zPTYxMng2MTIm/dz0wJms9MjAmYz1X/Q1F0Rm5tMW01UGlr/bkU0cUdBazNoeEd3/ZHBBaXF2MHFTZTdn/c0NKNEdVPQ'
+        },
+        49: {
+            name: 'Soldering Iron',
+            price: '$19.99',
+            description: 'The Soldering Iron is a precision tool used for joining metal parts by melting solder. It features a fast-heating element and a fine tip for detailed work, making it ideal for electronics, jewelry making, and small repairs. The soldering iron comes with a stand for safe storage while hot and a comfortable grip for extended use. Its an essential tool for hobbyists, technicians, and DIY enthusiasts.',
+            specifications: [
+                'Power: 30W',
+                'Temperature Range: 200°C - 450°C',
+                'Tip Type: Fine',
+                'Weight: 0.5 lbs',
+                'Additional Features: Heat-resistant handle, quick heat-up'
+            ],
+            image: 'https://imgs.search.brave.com/4OS09GgZeUUOwvUhWiU6EqbWp08mUelNcSiZMPf-Dwg/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly9oaXBz/LmhlYXJzdGFwcHMu/Y29tL3ZhZGVyLXBy/b2QuczMuYW1hem9u/YXdzLmNvbS8xNjY4/NjE3NjMwLTM5M2Vj/MWZiLWM2NDgtNDNj/NC04ODBkLWJjYmM3/MzZjMDgwOC04NDQz/MzcxZGRmM2MxNzFm/NGY1YzE5NjJmMTVh/MGEyNC0xNjY4NjE3/NTU0LmpwZz9jcm9w/PTEuMDB4dzoxLjAw/eGg7MCwwJnJlc2l6/ZT05ODA6Kg'
+        },
+        50: {
+            name: 'Heat Gun',
+            price: '$34.99',
+            description: ' The Heat Gun is a versatile tool used for stripping paint, shrinking tubing, and other tasks that require directed heat. It features adjustable temperature settings and a powerful fan for consistent airflow. The heat gun is designed with safety features like overheat protection and a cool-down mode, making it suitable for both professional and DIY use.',
+            specifications: [
+                'Power: 1500W',
+                'Temperature Range: 120°F - 1200°F',
+                'Weight: 2 lbs',
+                'Additional Features: Variable speed, multiple nozzles'
+            ],
+            image: 'https://imgs.search.brave.com/mv-qHhhA8_0MMWxumeAtU7Pdrj5Cc7zGsiDV02Dti_k/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly9jZG4x/MS5iaWdjb21tZXJj/ZS5jb20vcy03aHN0/YXNucmpnL2ltYWdl/cy9zdGVuY2lsLzUw/MHg2NTkvcHJvZHVj/dHMvMzkyNi8zMzY4/L2hlYXRfZ3VuMV9f/OTIxNTguMTU2ODE5/ODAxMS5qcGc_Yz0x'
+        },
+        51: {
+            name: 'Impact Wrench',
+            price: '$149.99',
+            description: 'The Impact Wrench is a powerful tool used for loosening and tightening bolts and nuts with high torque output. It features a robust motor and variable speed settings, allowing for precise control in automotive and construction applications. The impact wrench comes with a durable housing and an ergonomic grip, making it comfortable to use for extended periods.',
+            specifications: [
+                'Power: 1/2 inch drive',
+                'Torque: 400 ft-lbs',
+                'Speed: 0-2000 RPM',
+                'Weight: 4 lbs',
+                'Additional Features: Variable speed trigger, durable construction'
+            ],
+            image: 'https://imgs.search.brave.com/r0wsq9lFfZ19y34Cbvp90qMUov0LyaFPvWxFf1yXKMs/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly90My5m/dGNkbi5uZXQvanBn/LzA0LzMyLzI0LzQw/LzM2MF9GXzQzMjI0/NDA1Nl9uMHRwWU5V/dU1BUVBMY2E2b3dD/N0pZRXlGY25hMzBl/Zy5qcGc'
+        },
+        52: {
+            name: 'Bolt Cutter',
+            price: '$49.99',
+            description: 'The Bolt Cutter is a heavy-duty tool designed for cutting through thick metal bars, chains, and padlocks. It features hardened steel blades and long handles for maximum leverage, allowing for easy cutting of tough materials. The bolt cutter is ideal for construction, demolition, and emergency applications, offering reliable performance in demanding situations.',
+            specifications: [
+                'Cutting Capacity: 3/8 inch',
+                'Length: 24 inches',
+                'Material: Forged steel',
+                'Weight: 5 lbs',
+                'Additional Features: Adjustable jaws, comfortable grips'
+            ],
+            image: 'https://imgs.search.brave.com/bLKPtN0hL1VuAPTP978-UkZvZOFjetXWWs1mVPOHnRk/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly9zdGVl/bG1hbnRvb2xzLmNv/bS9jZG4vc2hvcC9w/cm9kdWN0cy9sZ2Rx/YXluZG84dmVyZ3By/MGVkbS5qcGc_dj0x/NzAwNzEyNzQ1Jndp/ZHRoPTY1MA'
+        },
+        53: {
+            name: 'Drill Bit Set',
+            price: '$24.99',
+            description: 'The Drill Bit Set includes a comprehensive assortment of high-quality drill bits designed for drilling into wood, metal, and plastic. Each bit is made from durable steel with a precision-ground tip for accurate drilling and reduced bit wobble. The set comes in a convenient storage case with labeled compartments for easy organization and quick access to the right bit for any job.',
+            specifications: [
+                'Number of Pieces: 20',
+                'Sizes: 1/16 inch to 1/2 inch',
+                'Material: High-speed steel',
+                'Weight: 1 lb',
+                'Additional Features: Organized case, durable bits'
+            ],
+            image: 'https://imgs.search.brave.com/sUxBW7TxE0wvufk3FChooIsxA5Pq5kL9u0m0CSh9Sw8/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly9jZG4x/MS5iaWdjb21tZXJj/ZS5jb20vcy0zYzhs/OWxqY2puL2ltYWdl/cy9zdGVuY2lsLzUw/MHg2NTkvcHJvZHVj/dHMvMjM4ODIvMjQ4/MjgvMDdjMDEwOF8y/NDZkcmlsbHNldF9t/YWluXzFfXzkyMzgx/X182MjMwNC4xNzA0/OTg2Mzg1LmpwZz9j/PTE'
+        },
+        54: {
+            name: 'Welding Mask',
+            price: '$89.99',
+            description: 'The Welding Mask provides essential protection for the eyes and face while performing welding tasks. It features an auto-darkening lens that adjusts to varying light conditions, reducing glare and protecting against harmful UV and infrared rays. The mask is designed with an adjustable headband for a comfortable fit and a lightweight frame for ease of use during extended welding sessions.',
+            specifications: [
+                'Material: Polycarbonate',
+                'Filter Shade: DIN 11',
+                'Weight: 1 lb',
+                'Additional Features: Adjustable head strap, comfortable fit'
+            ],
+            image: 'https://imgs.search.brave.com/KX3DZvInGo6Yh_DjU9DmppXA2dAvsxc1asaq9FqJu0Y/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly9tLm1l/ZGlhLWFtYXpvbi5j/b20vaW1hZ2VzL0kv/NTE0NWp5enEtTEwu/anBn'
+        },
+        55: {
+            name: 'Workbench',
+            price: '$229.99',
+            description: 'The Workbench is a sturdy and versatile platform designed for woodworking, metalworking, and general repair tasks. It features a solid wood top with a high weight capacity and adjustable height settings for ergonomic use. The workbench includes built-in storage options like shelves and drawers, providing ample space for tools and materials. Its ideal for both hobbyists and professionals in workshops or garages.',
+            specifications: [
+                'Dimensions: 60 x 30 x 36 inches',
+                'Material: Wood and steel',
+                'Weight: 80 lbs',
+                'Additional Features: Adjustable height, durable surface'
+            ],
+            image: 'https://imgs.search.brave.com/endT3wKR1Bf3hehkObmQH5fi4C8ZG5mRGlBlqPGxZUQ/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly93d3cu/Ym9idmlsYS5jb20v/d3AtY29udGVudC91/cGxvYWRzLzIwMjAv/MTEvVGhlLUJlc3Qt/UG9ydGFibGUtV29y/a2JlbmNoLU9wdGlv/bi1Xb3J4LVBlZ2Fz/dXMtRm9sZGluZy1X/b3JrLVRhYmxlLVNh/d2hvcnNlLmpwZz93/PTQwNA'
+        },
+        56: {
+            name: 'Multi-Tool',
+            price: '$39.99',
+            description: 'The Multi-Tool is a compact and versatile tool that combines several functions into one handy device. It includes pliers, wire cutters, a knife blade, screwdrivers, and other essential tools, making it perfect for a wide range of tasks. The multi-tool features a durable stainless steel construction and a convenient carrying pouch, making it an excellent addition to any toolbox or emergency kit.',
+            specifications: [
+                'Number of Functions: 12',
+                'Material: Stainless steel',
+                'Weight: 1 lb',
+                'Additional Features: Locking mechanisms, compact design'
+            ],
+            image: 'https://imgs.search.brave.com/q3mEntwZpxHmYy1sAPrMnHtz40JaGtyPCNcUj30eOQw/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly9oaXBz/LmhlYXJzdGFwcHMu/Y29tL3ZhZGVyLXBy/b2QuczMuYW1hem9u/YXdzLmNvbS8xNjE3/OTg0MDA5LTYxZ2Zh/MGlleC1sLWFjLXNs/MTAwMC0xNjE3OTgz/OTg1LmpwZz9jcm9w/PTF4dzoxeGg7Y2Vu/dGVyLHRvcCZyZXNp/emU9OTgwOio'
+        },
+        57: {
+            name: 'Workbench Light',
+            price: '$24.99',
+            description: 'The Workbench Light is designed to provide bright and focused illumination for work areas. It features an adjustable arm and a high-intensity LED bulb, allowing for precise lighting in various work conditions. The light is equipped with a clamp for secure attachment to workbenches or tables and has an easy-to-use switch for convenient operation.',
+            specifications: [
+                'Type: LED',
+                'Brightness: 500 lumens',
+                'Material: Plastic',
+                'Weight: 1 lb',
+                'Additional Features: Adjustable arm, energy-efficient'
+            ],
+            image: 'https://imgs.search.brave.com/-Rqn-BSUcG4q0jcEF0bJ0kJZFjr--ABrg6RRLkLZ-i0/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9tLm1l/ZGlhLWFtYXpvbi5j/b20vaW1hZ2VzL0kv/NzFnTitRaXVMV0wu/anBn'
+        },
+        58: {
+            name: 'Tool Organizer',
+            price: '$44.99',
+            description: 'The Tool Organizer helps keep your tools and accessories neatly arranged and easily accessible. It features multiple compartments of varying sizes for different types of tools and a durable construction for long-lasting use. The organizer is designed to fit into standard toolboxes and drawers, making it a practical solution for improving organization in your workshop or garage.',
+            specifications: [
+                'Dimensions: 16 x 12 x 8 inches',
+                'Material: Plastic',
+                'Number of Compartments: 12',
+                'Weight: 2 lbs',
+                'Additional Features: Removable dividers, compact design'
+            ],
+            image: 'https://imgs.search.brave.com/W4xwZY05it2nw2r0mrP5k8El0sbBjc6jaIWG2MzgJ68/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly9tLm1l/ZGlhLWFtYXpvbi5j/b20vaW1hZ2VzL1Mv/YXBsdXMtbWVkaWEt/bGlicmFyeS1zZXJ2/aWNlLW1lZGlhLzli/NDRlOWQyLWQzOTYt/NDg0NS1iNTk0LTRi/MTZjZWRiNWJhOS5f/X0NSMCwwLDE5NDAs/MTIwMF9QVDBfU1g5/NzBfVjFfX18ucG5n'
+        },
+        59: {
+            name: 'Safety Glasses',
+            price: '$14.99',
+            description: ' The Safety Glasses provide essential eye protection during various tasks and activities. They feature shatter-resistant lenses and a comfortable, adjustable strap for a secure fit. The glasses are designed to shield against debris, UV rays, and other hazards, making them suitable for use in workshops, construction sites, and other environments where eye protection is required.',
+            specifications: [
+                'Lens Material: Polycarbonate',
+                'Frame Material: Plastic',
+                'Weight: 0.5 lbs',
+                'Additional Features: Anti-scratch coating, adjustable temples'
+            ],
+            image: 'https://imgs.search.brave.com/D_TYPvh0JMZ6XycPMER3Ddu5wrjc909gWQIH74r30zw/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly9zYWZl/dHlnbGFzc2VzdXNh/LmNvbS9jZG4vc2hv/cC9wcm9kdWN0cy9T/RjQxMEFTLUZNX18z/MzMwNy4xNDk3NjMz/NzY2LjEyODAuMTI4/MC5qcGc_dj0xNzA1/NjE5MTAwJndpZHRo/PTkwMA'
+        },
+        60: {
+            name: 'Portable Work Light',
+            price: '$39.99',
+            description: 'The Portable Work Light provides bright illumination for work areas, making it ideal for both indoor and outdoor use. It features a compact design with a sturdy handle for easy transport and adjustable brightness settings to suit different tasks. The light is powered by a rechargeable battery, offering convenience and flexibility in various work environments.',
+            specifications: [
+                'Light Type: LED',
+                'Brightness: 300 lumens',
+                'Material: Plastic',
+                'Weight: 1 lb',
+                'Additional Features: Rechargeable battery, adjustable stand'
+            ],
+            image: 'https://imgs.search.brave.com/oXhokzdCY6cc06dEw3LfV4NIEbpASzL61qsuGWslsfU/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly9tLm1l/ZGlhLWFtYXpvbi5j/b20vaW1hZ2VzL0kv/NzErWkx0cjVkaEwu/anBn'
+        }
+    };
+
+    const product = productDetails[productId];
+            if (product) {
+                document.getElementById('product-name').textContent = product.name;
+                document.getElementById('product-price').textContent = product.price;
+                document.getElementById('product-description').textContent = product.description;
+                document.getElementById('product-image').src = product.image;
+
+                const specificationsList = document.getElementById('product-specifications');
+                specificationsList.innerHTML = '';
+                product.specifications.forEach(spec => {
+                    const li = document.createElement('li');
+                    li.textContent = spec;
+                    specificationsList.appendChild(li);
+                });
+            }
+        }
+
+        // Get the product ID from the query parameters and load details
+        const productId = getQueryParams();
+        if (productId) {
+            loadProductDetails(productId);
+        }
+    </script>
+
+    <!-- Footer -->
+    <footer class="bg-light text-center py-4 mt-5">
+        <p>&copy; 2024 Everyday Solution. All rights reserved.</p>
+    </footer>
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
